@@ -7,73 +7,72 @@ GH_REPO="https://github.com/kubeshark/kubeshark"
 TOOL_NAME="kubeshark"
 TOOL_TEST="kubeshark version"
 
-
 ansi() {
-  if [ -n "$TERM" ]; then
-    # see if terminal supports colors...
-    local ncolors=$(tput colors)
-    if test -n "$ncolors" && test $ncolors -ge 8; then
-      echo -e "\e[${1}m${*:2}\e[0m"
-    else
-      echo -e ${*:2}
-    fi
-  else
-    echo -e ${*:2}
-  fi
+	if [ -n "$TERM" ]; then
+		# see if terminal supports colors...
+		local ncolors=$(tput colors)
+		if test -n "$ncolors" && test $ncolors -ge 8; then
+			echo -e "\e[${1}m${*:2}\e[0m"
+		else
+			echo -e ${*:2}
+		fi
+	else
+		echo -e ${*:2}
+	fi
 }
 
 bold() {
-  ansi 1 "$@"
+	ansi 1 "$@"
 }
 
 italic() {
-  ansi 3 "$@"
+	ansi 3 "$@"
 }
 
 strikethrough() {
-  ansi 9 "$@"
+	ansi 9 "$@"
 }
 
 underline() {
-  ansi 4 "$@"
+	ansi 4 "$@"
 }
 
 blue() {
-  ansi 34 "$@"
+	ansi 34 "$@"
 }
 
 red() {
-  ansi 31 "$@"
+	ansi 31 "$@"
 }
 
 fail() {
-  red "asdf-$TOOL_NAME: $*"
-  exit 1
+	red "asdf-$TOOL_NAME: $*"
+	exit 1
 }
 
 uname_os() {
-  os=$(uname -s | tr '[:upper:]' '[:lower:]')
+	os=$(uname -s | tr '[:upper:]' '[:lower:]')
 
-  case "$os" in
-  msys* | cygwin* | mingw*)
-    os='windows'
-    ;;
-  esac
+	case "$os" in
+	msys* | cygwin* | mingw*)
+		os='windows'
+		;;
+	esac
 
-  echo "$os"
+	echo "$os"
 }
 
 uname_arch() {
-  arch=$(uname -m)
-  case $arch in
-  x86_64) arch="amd64" ;;
-  x86 | i686 | i386) arch="386" ;;
-  aarch64) arch="arm64" ;;
-  armv5*) arch="armv5" ;;
-  armv6*) arch="armv6" ;;
-  armv7*) arch="armv7" ;;
-  esac
-  echo "$arch"
+	arch=$(uname -m)
+	case $arch in
+	x86_64) arch="amd64" ;;
+	x86 | i686 | i386) arch="386" ;;
+	aarch64) arch="arm64" ;;
+	armv5*) arch="armv5" ;;
+	armv6*) arch="armv6" ;;
+	armv7*) arch="armv7" ;;
+	esac
+	echo "$arch"
 }
 
 curl_opts=(-fsSL -A "\"asdf-$TOOL_NAME ($(uname_os)/$(uname_arch))\"")
