@@ -11,7 +11,8 @@ source "${plugin_dir}/lib/utils.bash"
 mkdir -p "$ASDF_DOWNLOAD_PATH"
 
 # Adapt this to proper extension and adapt extracting strategy.
-release_file="$ASDF_DOWNLOAD_PATH/$TOOL_NAME"
+mkdir -p "$ASDF_DOWNLOAD_PATH/bin"
+release_file="$ASDF_DOWNLOAD_PATH/bin/$TOOL_NAME"
 
 # Download tar.gz file to the download directory
 download_release "$ASDF_INSTALL_VERSION" "$release_file"
