@@ -104,7 +104,7 @@ download_release() {
 	filename="$2"
 
 	# Adapt the release URL convention for kubeshark
-	url="$GH_REPO/releases/download/${version}/${TOOL_NAME}_$(uname_os)_$(uname_arch)"
+	url="$GH_REPO/releases/download/${version}/${TOOL_NAME}_${version}_$(uname_os)_$(uname_arch).tar.gz"
 	if [[ "$(uname_os)" == "windows" ]]; then
 		url="$GH_REPO/releases/download/${version}/${TOOL_NAME}.exe"
 	fi
@@ -116,7 +116,7 @@ download_release() {
 install_version() {
 	local install_type="$1"
 	local version="$2"
-	local install_path="${3%/bin}"
+	local install_path="${3%/bin}/bin"
 
 	if [ "$install_type" != "version" ]; then
 		fail "asdf-$TOOL_NAME supports release installs only"
