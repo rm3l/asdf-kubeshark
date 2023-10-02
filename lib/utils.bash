@@ -104,7 +104,7 @@ download_release() {
 	filename="$2"
 
 	# Adapt the release URL convention for kubeshark
-	url="$GH_REPO/releases/download/${version}/${TOOL_NAME}_${version}_$(uname_os)_$(uname_arch)"
+	url="$GH_REPO/releases/download/${version}/${TOOL_NAME}_$(uname_os)_$(uname_arch)"
 	if [[ "$(uname_os)" == "windows" ]]; then
 		url="$GH_REPO/releases/download/${version}/${TOOL_NAME}.exe"
 	fi
