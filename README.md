@@ -24,8 +24,6 @@
 Plugin:
 
 ```shell
-asdf plugin add kubeshark
-# or
 asdf plugin add kubeshark https://github.com/rm3l/asdf-kubeshark.git
 ```
 
