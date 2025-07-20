@@ -88,7 +88,7 @@ sort_versions() {
 
 list_github_tags() {
 	git ls-remote --tags --refs "$GH_REPO" |
-		grep -o 'refs/tags/.*' | cut -d/ -f3- | grep -v stable | grep -v v0.0.1 |
+		grep -o 'refs/tags/.*' | cut -d/ -f3- | grep -v stable | grep -v v0.0.1 | grep -v 'v72.3.83' |
 		sed 's/^v//' # NOTE: You might want to adapt this sed to remove non-version strings from tags
 }
 
@@ -104,12 +104,19 @@ download_release() {
 	filename="$2"
 
 	# Adapt the release URL convention for kubeshark
-	url="$GH_REPO/releases/download/${version}/${TOOL_NAME}_${version}_$(uname_os)_$(uname_arch).tar.gz"
+	local versionMajor versionDl
+	versionMajor=$(echo "$version" | cut -d'.' -f1)
+	versionDl=${version}
+	if [[ "$versionMajor" -gt "50" ]]; then
+		versionDl="v${version}"
+	fi
+	url="$GH_REPO/releases/download/${versionDl}/${TOOL_NAME}_$(uname_os)_$(uname_arch)"
 	if [[ "$(uname_os)" == "windows" ]]; then
-		url="$GH_REPO/releases/download/${version}/${TOOL_NAME}.exe"
+		url="$GH_REPO/releases/download/${versionDl}/${TOOL_NAME}.exe"
 	fi
 
-	echo "* Downloading $TOOL_NAME release $version..."
+	echo "* Downloading $TOOL_NAME release $version to $filename..."
+	set -x
 	curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
 }
 
@@ -126,10 +133,8 @@ install_version() {
 		mkdir -p "$install_path"
 		cp -r "$ASDF_DOWNLOAD_PATH"/* "$install_path"
 
-		# Assert kubeshark executable exists.
-		local tool_cmd
-		tool_cmd="$(echo "$TOOL_TEST" | cut -d' ' -f1)"
-		test -x "$install_path/$tool_cmd" || fail "Expected $install_path/$tool_cmd to be executable."
+		# Assert kubeshark executable exists
+		test -x "$install_path" || fail "Expected $install_path to be executable."
 
 		echo "$TOOL_NAME $version installation was successful!"
 	) || (

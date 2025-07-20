@@ -31,7 +31,7 @@ kubeshark:
 
 ```shell
 # Show all installable versions
-asdf list-all kubeshark
+asdf list all kubeshark
 
 # Install specific version
 asdf install kubeshark latest
