@@ -131,10 +131,10 @@ install_version() {
 
 	(
 		mkdir -p "$install_path"
-		cp -r "$ASDF_DOWNLOAD_PATH"/* "$install_path"
+		cp -vr "$ASDF_DOWNLOAD_PATH"/$TOOL_NAME "$install_path/$TOOL_NAME"
 
 		# Assert kubeshark executable exists
-		test -x "$install_path" || fail "Expected $install_path to be executable."
+		test -x "$install_path/$TOOL_NAME" || fail "Expected $install_path/$TOOL_NAME to be executable."
 
 		echo "$TOOL_NAME $version installation was successful!"
 	) || (
